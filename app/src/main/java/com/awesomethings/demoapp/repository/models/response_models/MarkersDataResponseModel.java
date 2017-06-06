@@ -3,9 +3,9 @@ package com.awesomethings.demoapp.repository.models.response_models;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class MarkersDataResponseModel {
         return fields;
     }
 
-    public class Properties {
+    public class Properties implements Serializable{
 
         @SerializedName("name")
         private String name;

@@ -21,9 +21,11 @@ import retrofit2.Response;
 
 public class MarkersRetrievingServiceInteractor {
 
+    private final Gson gson = new Gson();
+    private final NetworkApi api = NetworkApi.Factory.getApi();
+
     public void startMarkerRetrievingRequest(final IOnRequestFinishedListener<MarkersDataResponseModel> listener){
-        final Call<ResponseBody> request = NetworkApi.Factory.getApi().startMarkersRetrievingRequest();
-        final Gson gson = new Gson();
+        final Call<ResponseBody> request = api.startMarkersRetrievingRequest();
         request.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -54,7 +56,7 @@ public class MarkersRetrievingServiceInteractor {
 
                         listener.onResponse(responseModel);
                     }else {
-                        listener.onResponse(new MarkersDataResponseModel());
+                        listener.onResponse(null);
                     }
                 }catch (Exception e){
                     listener.onFailed(e.getMessage());

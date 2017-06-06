@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Demo App</string>
     <string name="google_maps_key">AIzaSyCI71LUaXCD89rx_cCoetLE1JyPVw-UY1I</string>
+    <string name="localized_str_location">Location : </string>
+    <string name="local_str_price">Price : </string>
+    <string name="local_str_name">Name :</string>
 </resources>
