@@ -21,13 +21,13 @@ public class MainPagePresenter implements IOnRequestFinishedListener<MarkersData
     /**
      * start properties and fields network request
      */
-    public void startMarkerDataRetreivingRequest(){
-        view.dispplayLoader();
+    public void startMarkerDataRetrievingRequest(){
+        view.displayLoader();
         interactor.startMarkerRetrievingRequest(this);
     }
 
     @Override
-    public void onResponse(MarkersDataResponseModel markersDataResponseModel) {
+    public void onResponse(final MarkersDataResponseModel markersDataResponseModel) {
         if (view != null) {
             view.hideLoader();
             view.onResponse(markersDataResponseModel);
@@ -41,4 +41,5 @@ public class MainPagePresenter implements IOnRequestFinishedListener<MarkersData
             view.onFailed(errorMsg);
         }
     }
+
 }

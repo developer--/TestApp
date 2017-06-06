@@ -6,7 +6,7 @@ package com.awesomethings.demoapp.events;
 
 public interface IExtraFuncs {
     interface Loader {
-        void dispplayLoader();
+        void displayLoader();
         void hideLoader();
     }
 }
