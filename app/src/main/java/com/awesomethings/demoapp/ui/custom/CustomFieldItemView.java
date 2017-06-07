@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 
 /**
- * Created by dev-00 on 6/7/17.
+ * Created by jemo on 6/7/17.
  */
 
 public class CustomFieldItemView extends LinearLayout {
@@ -72,7 +72,6 @@ public class CustomFieldItemView extends LinearLayout {
                 case BUTTON:
                     labelTextView.setVisibility(GONE);
                     final Button button = new Button(getContext());
-                    button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     button.setText("Submit");
                     containerLayout.addView(button);
                     button.setOnClickListener(new OnClickListener() {

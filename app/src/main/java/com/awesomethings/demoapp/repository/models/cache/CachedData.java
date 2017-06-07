@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.awesomethings.demoapp.repository.models.response_models.MarkersDataResponseModel;
 
 /**
- * Created by Master on 6/7/17.
+ * Created by jemo on 6/7/17.
  */
 
 public class CachedData {

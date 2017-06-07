@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.awesomethings.demoapp.R;
 
 /**
- * Created by dev-00 on 6/7/17.
+ * Created by jemo on 6/7/17.
  */
 
 public class BaseActivity extends AppCompatActivity {

@@ -1,6 +1,5 @@
 package com.awesomethings.demoapp.ui.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;

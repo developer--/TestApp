@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by Master on 6/7/17.
+ * Created by jemo on 6/7/17.
  */
 
 public class HelpersFuncs {

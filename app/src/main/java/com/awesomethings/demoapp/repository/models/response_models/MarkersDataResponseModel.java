@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Master on 6/6/17.
+ * Created by jemo on 6/6/17.
  */
 
 public class MarkersDataResponseModel {

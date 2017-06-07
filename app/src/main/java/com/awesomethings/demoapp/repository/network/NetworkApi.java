@@ -18,7 +18,7 @@ import retrofit2.http.GET;
 import static com.awesomethings.demoapp.repository.network.RequestApi._BASE_URL;
 
 /**
- * Created by Master on 6/6/17.
+ * Created by jemo on 6/6/17.
  */
 
 public interface NetworkApi {

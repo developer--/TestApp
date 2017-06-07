@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 /**
- * Created by dev-00 on 6/7/17.
+ * Created by jemo on 6/7/17.
  */
 
 public class SliderAdapter extends PagerAdapter {
