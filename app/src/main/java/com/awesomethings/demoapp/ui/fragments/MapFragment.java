@@ -1,23 +1,18 @@
-package com.awesomethings.demoapp.ui.activities;
+package com.awesomethings.demoapp.ui.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.SparseArray;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +20,7 @@ import com.awesomethings.demoapp.R;
 import com.awesomethings.demoapp.events.IMapPageView;
 import com.awesomethings.demoapp.presenter.MainPagePresenter;
 import com.awesomethings.demoapp.repository.models.response_models.MarkersDataResponseModel;
+import com.awesomethings.demoapp.ui.activities.DetailActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -44,8 +40,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener, BottomNavigationView.OnNavigationItemSelectedListener, IMapPageView<MarkersDataResponseModel> {
+public class MapFragment extends Fragment  implements OnMapReadyCallback, GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener, IMapPageView<MarkersDataResponseModel> {
 
     public static final String VIEW_MODEL = "VIEW_MODEL";
     private GoogleMap mMap;
@@ -55,60 +51,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MarkersDataResponseModel.Properties selectedMarkerModel = null;
 
     @BindView(R.id.loader_wrapper_layout_id) ViewGroup loaderWrapper;
-    @BindView(R.id.progress_bar_id) ContentLoadingProgressBar progressBar;
+    @BindView(R.id.progress_bar_id) ProgressBar progressBar;
     @BindView(R.id.map_overlay_layout_id) ViewGroup mapOverlayLayout;
     @BindView(R.id.marker_image_view_id) ImageView image1;
     @BindView(R.id.target_name_txt_id) TextView nameTextView;
-    @BindView(R.id.navigation_view) NavigationView navigationView;
-    @BindView(R.id.main_toolbar_id) Toolbar toolbar;
-    @BindView(R.id.drawer_layout_id) DrawerLayout drawerLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        unbinder = ButterKnife.bind(this);
-        initDrawer();
-
-        presenter = new MainPagePresenter(this,this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final View view =  inflater.inflate(R.layout.fragment_map, container, false);
+        unbinder = ButterKnife.bind(this,view);
+        presenter = new MainPagePresenter(getContext(),this);
         SupportMapFragment mapFragment = getMapFragment();
         mapFragment.getMapAsync(this);
-
-    }
-
-    private void initDrawer(){
-        try {
-            setSupportActionBar(toolbar);
-            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
-                @Override
-                public void onDrawerClosed(View drawerView) {
-                    super.onDrawerClosed(drawerView);
-                }
-
-                @Override
-                public void onDrawerOpened(View drawerView) {
-                    super.onDrawerOpened(drawerView);
-                }
-            };
-            drawerLayout.addDrawerListener(actionBarDrawerToggle);
-            actionBarDrawerToggle.syncState();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        return view;
     }
 
     @OnClick(R.id.map_overlay_layout_id)
     protected void onMapOverlayClick(final View view){
-        final Intent intent = new Intent(this,DetailActivity.class);
+        final Intent intent = new Intent(getContext(),DetailActivity.class);
         intent.putExtra(VIEW_MODEL, selectedMarkerModel);
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, view, "map_overlay_transition");
+                makeSceneTransitionAnimation(getActivity(), view, "map_overlay_transition");
         startActivity(intent, options.toBundle());
-    }
-
-    private SupportMapFragment getMapFragment() {
-        final FragmentManager manager = getSupportFragmentManager();
-        return (SupportMapFragment) manager.findFragmentById(R.id.map_fragment_id);
     }
 
     @Override
@@ -122,12 +87,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void displayLoader() {
         loaderWrapper.setVisibility(View.VISIBLE);
-        progressBar.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoader() {
-        progressBar.hide();
+        progressBar.setVisibility(View.GONE);
         loaderWrapper.setVisibility(View.GONE);
     }
 
@@ -137,14 +102,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         unbinder.unbind();
     }
 
     @Override
     public void onFailed(final String errorMsg) {
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -162,6 +127,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         hideMapOverlay();
     }
 
+    private SupportMapFragment getMapFragment() {
+        final FragmentManager manager = getChildFragmentManager();
+        return (SupportMapFragment) manager.findFragmentById(R.id.map_fragment_id);
+    }
 
     private void showMapOverlay(final MarkersDataResponseModel.Properties propertyModel){
         mapOverlayLayout.setVisibility(View.VISIBLE);
@@ -192,9 +161,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 for (MarkersDataResponseModel.Properties prop : markersDataResponseModel.getProperties()) {
                     final LatLng latLng = prop.getLatLng();
                     assert latLng != null;
-                    TextView text = new TextView(this);
+                    TextView text = new TextView(getContext());
                     text.setText(prop.getPrice());
-                    IconGenerator generator = new IconGenerator(this);
+                    IconGenerator generator = new IconGenerator(getContext());
                     generator.setContentView(text);
                     Bitmap icon = generator.makeIcon();
 
@@ -209,11 +178,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
-        return true;
     }
 }

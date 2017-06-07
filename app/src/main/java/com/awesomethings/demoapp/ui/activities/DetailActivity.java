@@ -15,6 +15,7 @@ import com.awesomethings.demoapp.repository.models.response_models.MarkersDataRe
 import com.awesomethings.demoapp.transorm_anim.DepthPageTransformer;
 import com.awesomethings.demoapp.ui.adapter.SliderAdapter;
 import com.awesomethings.demoapp.ui.custom.CustomFieldItemView;
+import com.awesomethings.demoapp.ui.fragments.MapFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        final MarkersDataResponseModel.Properties propertyModel = (MarkersDataResponseModel.Properties) getIntent().getSerializableExtra(MapActivity.VIEW_MODEL);
+        final MarkersDataResponseModel.Properties propertyModel = (MarkersDataResponseModel.Properties) getIntent().getSerializableExtra(MapFragment.VIEW_MODEL);
         initUI(propertyModel);
     }
 

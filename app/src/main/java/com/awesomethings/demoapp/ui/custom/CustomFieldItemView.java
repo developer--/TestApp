@@ -3,8 +3,10 @@ package com.awesomethings.demoapp.ui.custom;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +30,7 @@ public class CustomFieldItemView extends LinearLayout {
 
     @BindView(R.id.field_draw_space_layout_id) LinearLayout containerLayout;
     @BindView(R.id.field_label_txt_id) TextView labelTextView;
+    @BindView(R.id.mandatory_sign_txt_id) TextView mandatorySignTextView;
 
     public CustomFieldItemView(Context context) {
         super(context);
@@ -37,13 +40,17 @@ public class CustomFieldItemView extends LinearLayout {
     public void drawField(final MarkersDataResponseModel.Fields fieldViewModel) {
         this.fieldModel = fieldViewModel;
         if (fieldViewModel != null) {
+            showMandatorySign(Boolean.parseBoolean(fieldViewModel.getMandatory()));
             FieldType type = FieldType.valueOf(fieldViewModel.getType().toUpperCase());
             labelTextView.setText(fieldViewModel.getName());
             switch (type) {
                 case TEXT:
-                    final TextView nameLabel = new TextView(getContext());
-                    nameLabel.setText(fieldViewModel.getValue());
-                    containerLayout.addView(nameLabel);
+//                    final TextView nameLabel = new TextView(getContext());
+//                    nameLabel.setText(fieldViewModel.getValue());
+                    final EditText editText = new EditText(getContext());
+                    editText.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    editText.setText(fieldViewModel.getValue());
+                    containerLayout.addView(editText);
                     break;
                 case SELECT:
                     for (final String it : fieldViewModel.getValue().split(",")) {
@@ -65,6 +72,7 @@ public class CustomFieldItemView extends LinearLayout {
                 case BUTTON:
                     labelTextView.setVisibility(GONE);
                     final Button button = new Button(getContext());
+                    button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     button.setText("Submit");
                     containerLayout.addView(button);
                     button.setOnClickListener(new OnClickListener() {
@@ -81,6 +89,10 @@ public class CustomFieldItemView extends LinearLayout {
     private void init(final Context context) {
         final View itemView = LayoutInflater.from(context).inflate(R.layout.custom_filed_item_layout, this);
         ButterKnife.bind(this, itemView);
+    }
+
+    private void showMandatorySign(final boolean show){
+        mandatorySignTextView.setVisibility(show ? VISIBLE : INVISIBLE);
     }
 
     public boolean isMandatoryFieldsFilled() throws Exception {

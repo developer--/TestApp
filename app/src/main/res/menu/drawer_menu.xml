@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/menu_str_home" android:checked="true" android:id="@+id/nav_menu_home"/>
-    <item android:title="@string/menu_str_about" android:id="@+id/nav_menu_about"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu_home"
+            android:checked="true"
+            android:icon="@mipmap/ic_home"
+            android:title="@string/menu_str_home" />
+
+        <item
+            android:id="@+id/nav_menu_about"
+            android:icon="@mipmap/ic_about"
+            android:title="@string/menu_str_about" />
+    </group>
 </menu>
