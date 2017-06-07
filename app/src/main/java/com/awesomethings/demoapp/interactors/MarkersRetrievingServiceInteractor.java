@@ -45,7 +45,7 @@ public class MarkersRetrievingServiceInteractor {
                         }
 
                         final JSONObject fieldsObject = jsonObject.getJSONObject("fields");
-                        final Iterator fieldsKeys = propertiesJsonObject.keys();
+                        final Iterator fieldsKeys = fieldsObject.keys();
 
                         while (fieldsKeys.hasNext()){
                             String fieldsKey = (String) fieldsKeys.next();
