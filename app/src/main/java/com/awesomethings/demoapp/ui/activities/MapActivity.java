@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,7 +51,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Unbinder unbinder;
     private MainPagePresenter presenter;
-    private HashMap<Integer, MarkersDataResponseModel.Properties> propertiesMap = new HashMap<>();
+    private SparseArray<MarkersDataResponseModel.Properties> propertiesSparseArray = new SparseArray<>();
     private MarkersDataResponseModel.Properties selectedMarkerModel = null;
 
     @BindView(R.id.loader_wrapper_layout_id) ViewGroup loaderWrapper;
@@ -151,8 +150,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         final int markerHash = marker.hashCode();
-        if (propertiesMap.containsKey(markerHash)) {
-            selectedMarkerModel = propertiesMap.get(markerHash);
+        if (propertiesSparseArray.get(markerHash) != null) {
+            selectedMarkerModel = propertiesSparseArray.get(markerHash);
             showMapOverlay(selectedMarkerModel);
         }
         return true;
@@ -201,7 +200,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     MarkerOptions tp = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(icon));
                     Marker marker = mMap.addMarker(tp);
-                    propertiesMap.put(marker.hashCode(), prop);
+                    propertiesSparseArray.put(marker.hashCode(), prop);
 //                    final MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(prop.getPrice());
 //                    mMap.addMarker(markerOptions);
                 }
