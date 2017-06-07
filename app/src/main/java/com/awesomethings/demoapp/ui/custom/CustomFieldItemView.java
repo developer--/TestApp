@@ -25,8 +25,9 @@ import butterknife.ButterKnife;
 public class CustomFieldItemView extends LinearLayout {
 
     private MarkersDataResponseModel.Fields fieldModel;
-    @BindView(R.id.field_draw_space_layout_id)
-    LinearLayout containerLayout;
+
+    @BindView(R.id.field_draw_space_layout_id) LinearLayout containerLayout;
+    @BindView(R.id.field_label_txt_id) TextView labelTextView;
 
     public CustomFieldItemView(Context context) {
         super(context);
@@ -37,10 +38,11 @@ public class CustomFieldItemView extends LinearLayout {
         this.fieldModel = fieldViewModel;
         if (fieldViewModel != null) {
             FieldType type = FieldType.valueOf(fieldViewModel.getType().toUpperCase());
+            labelTextView.setText(fieldViewModel.getName());
             switch (type) {
                 case TEXT:
                     final TextView nameLabel = new TextView(getContext());
-                    nameLabel.setText("name");
+                    nameLabel.setText(fieldViewModel.getValue());
                     containerLayout.addView(nameLabel);
                     break;
                 case SELECT:
@@ -61,6 +63,7 @@ public class CustomFieldItemView extends LinearLayout {
                     containerLayout.addView(radioGroup);
                     break;
                 case BUTTON:
+                    labelTextView.setVisibility(GONE);
                     final Button button = new Button(getContext());
                     button.setText("Submit");
                     containerLayout.addView(button);

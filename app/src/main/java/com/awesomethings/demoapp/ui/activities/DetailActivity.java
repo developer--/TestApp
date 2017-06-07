@@ -1,10 +1,9 @@
-package com.awesomethings.demoapp.ui;
+package com.awesomethings.demoapp.ui.activities;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import com.awesomethings.demoapp.repository.models.response_models.MarkersDataRe
 import com.awesomethings.demoapp.transorm_anim.DepthPageTransformer;
 import com.awesomethings.demoapp.ui.adapter.SliderAdapter;
 import com.awesomethings.demoapp.ui.custom.CustomFieldItemView;
-import com.bumptech.glide.Glide;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -31,19 +29,24 @@ public class DetailActivity extends AppCompatActivity {
     private List<CustomFieldItemView> fieldItemViewList = new ArrayList<>();
     private Unbinder unbinder;
 
-    @BindView(R.id.map_overlay_layout_id) ViewGroup mapOverlayLayout;
     @BindView(R.id.target_name_txt_id) TextView nameTextView;
     @BindView(R.id.price_txt_id) TextView priceTextView;
     @BindView(R.id.fields_container_layout) LinearLayout fieldsContainerLayout;
     @BindView(R.id.location_name_txt_id) TextView locationTextView;
     @BindView(R.id.image_slider_pager_id) ViewPager sliderPager;
+    @BindView(R.id.detail_page_toolbar_id) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_acitivity);
         unbinder = ButterKnife.bind(this);
-        final MarkersDataResponseModel.Properties propertyModel = (MarkersDataResponseModel.Properties) getIntent().getSerializableExtra(MainActivity.VIEW_MODEL);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        final MarkersDataResponseModel.Properties propertyModel = (MarkersDataResponseModel.Properties) getIntent().getSerializableExtra(MapActivity.VIEW_MODEL);
         initUI(propertyModel);
     }
 
@@ -51,22 +54,26 @@ public class DetailActivity extends AppCompatActivity {
     public void onSubmitButtonClick(MyEventBus.FieldsValidCheckerEventModel eventModel){
         if (fieldItemViewList != null){
             boolean isMandatoryFieldsFilled = false;
-            for (CustomFieldItemView it : fieldItemViewList){
-                try {
+            try {
+                for (CustomFieldItemView it : fieldItemViewList){
                     if (! it.isMandatoryFieldsFilled()){
-                        Toast.makeText(this, "Some mandatory field is empty", Toast.LENGTH_SHORT).show();
+                        isMandatoryFieldsFilled = false;
                         break;
                     }else {
                         isMandatoryFieldsFilled = true;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            }catch (Exception e) {
+                e.printStackTrace();
             }
-            if (isMandatoryFieldsFilled){
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, isMandatoryFieldsFilled ? "Success" : "Some mandatory field is empty", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

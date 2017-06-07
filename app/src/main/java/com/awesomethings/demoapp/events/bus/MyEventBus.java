@@ -13,6 +13,5 @@ public class MyEventBus {
         return bus;
     }
 
-
     public static class FieldsValidCheckerEventModel {}
 }

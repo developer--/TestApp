@@ -1,14 +1,19 @@
-package com.awesomethings.demoapp.ui;
+package com.awesomethings.demoapp.ui.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,11 +43,14 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, IMapPageView<MarkersDataResponseModel> {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener, BottomNavigationView.OnNavigationItemSelectedListener, IMapPageView<MarkersDataResponseModel> {
 
     public static final String VIEW_MODEL = "VIEW_MODEL";
     private GoogleMap mMap;
+    private Unbinder unbinder;
     private MainPagePresenter presenter;
     private HashMap<Integer, MarkersDataResponseModel.Properties> propertiesMap = new HashMap<>();
     private MarkersDataResponseModel.Properties selectedMarkerModel = null;
@@ -52,15 +60,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @BindView(R.id.map_overlay_layout_id) ViewGroup mapOverlayLayout;
     @BindView(R.id.marker_image_view_id) ImageView image1;
     @BindView(R.id.target_name_txt_id) TextView nameTextView;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.main_toolbar_id) Toolbar toolbar;
+    @BindView(R.id.drawer_layout_id) DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        unbinder = ButterKnife.bind(this);
+        initDrawer();
+
         presenter = new MainPagePresenter(this,this);
-        ButterKnife.bind(this);
         SupportMapFragment mapFragment = getMapFragment();
         mapFragment.getMapAsync(this);
+
+    }
+
+    private void initDrawer(){
+        try {
+            setSupportActionBar(toolbar);
+            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                }
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                }
+            };
+            drawerLayout.addDrawerListener(actionBarDrawerToggle);
+            actionBarDrawerToggle.syncState();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.map_overlay_layout_id)
@@ -72,10 +107,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent, options.toBundle());
     }
 
-    /**
-     * ამოვიღოთ მეპის ფრაგმენტი
-     * @return SupportMapFragment
-     */
     private SupportMapFragment getMapFragment() {
         final FragmentManager manager = getSupportFragmentManager();
         return (SupportMapFragment) manager.findFragmentById(R.id.map_fragment_id);
@@ -107,8 +138,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onFailed(final String errorMsg) {
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 
+    @Override
+    public void onFailed(final String errorMsg) {
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -168,10 +205,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    final MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(prop.getPrice());
 //                    mMap.addMarker(markerOptions);
                 }
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markersDataResponseModel.getProperties().get(0).getLatLng(), 13f));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markersDataResponseModel.getProperties().get(0).getLatLng(), 10f));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

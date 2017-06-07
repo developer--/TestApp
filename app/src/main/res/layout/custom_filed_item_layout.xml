@@ -3,6 +3,13 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/field_label_txt_id"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/field_draw_space_layout_id"
         android:orientation="horizontal"

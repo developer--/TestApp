@@ -6,13 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <!-- specify enter and exit transitions -->
-        <!-- options are: explode, slide, fade -->
         <item name="android:windowEnterTransition" tools:targetApi="lollipop">@transition/change_image_transition</item>
         <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/change_image_transition</item>
-
-        <!-- specify shared element transitions -->
         <item name="android:windowSharedElementEnterTransition" tools:targetApi="lollipop">@transition/change_image_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/change_image_transition</item>
     </style>

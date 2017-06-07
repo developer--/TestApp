@@ -4,4 +4,10 @@
     <string name="localized_str_location">Location : </string>
     <string name="local_str_price">Price : </string>
     <string name="local_str_name">Name :</string>
+    <string name="menu_str_about">about</string>
+    <string name="menu_str_home">Home</string>
+    <string name="nav_menu_header_tmp_txt">Hello from Georgia</string>
+    <string name="openDrawer">open</string>
+    <string name="closeDrawer">close</string>
+    <string name="company_title">REALTYNA</string>
 </resources>

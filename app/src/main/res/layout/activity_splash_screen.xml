@@ -5,10 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="com.awesomethings.demoapp.ui.SplashScreenActivity">
+    tools:context="com.awesomethings.demoapp.ui.activities.SplashScreenActivity">
 
-    <TextView
-        android:text="hello"
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:id="@+id/splash_screen_text_view_id"
+        android:text="@string/company_title"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
